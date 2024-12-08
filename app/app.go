@@ -29,6 +29,11 @@ func (a *App) Routes() {
 	r.GET("/manga/:id", mangaController.GetOneManga)
 	r.PUT("/manga/:id", mangaController.UpdateManga)
 	r.DELETE("/manga/:id", mangaController.DeleteManga)
+
+	chapterController := controller.NewChapterController(a.DB)
+	r.POST("/chapter", chapterController.InsertChapter)
+	r.GET("/chapter/:id", chapterController.GetChapters)
+	r.DELETE("/chapter/:id", chapterController.DeleteChapter)
 	a.Router = r
 }
 
