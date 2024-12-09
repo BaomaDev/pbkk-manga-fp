@@ -81,7 +81,7 @@ func (m *ChapterController) DeleteChapter(c *gin.Context) {
 		return
 	}
 	repository := repository.NewChapterRepository(DB)
-	delete := repository.DeleteChapter(uri.MangaID ,uri.ChapterID)
+	delete := repository.DeleteChapter(uri.MangaID, uri.ChapterID)
 	if delete {
 		c.JSON(200, gin.H{"status": "success", "msg": "delete manga successfully"})
 		return
@@ -90,4 +90,3 @@ func (m *ChapterController) DeleteChapter(c *gin.Context) {
 		return
 	}
 }
-

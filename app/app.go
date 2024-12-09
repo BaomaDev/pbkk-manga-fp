@@ -33,7 +33,7 @@ func (a *App) Routes() {
 	chapterController := controller.NewChapterController(a.DB)
 	r.POST("/chapter", chapterController.InsertChapter)
 	r.GET("/chapter/:id", chapterController.GetChapters)
-	r.DELETE("/chapter/:id", chapterController.DeleteChapter)
+	r.DELETE("/chapter/:manga_id/:chapter_id", chapterController.DeleteChapter)
 	a.Router = r
 }
 
