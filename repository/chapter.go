@@ -83,7 +83,7 @@ func (r *ChapterRepository) InsertChapter(post model.PostChapter) bool {
 // DeleteChapter implements MangaRepositoryInterface
 func (m *ChapterRepository) DeleteChapter(mangaID uint, chapterID uint) bool {
 	// Prepare the DELETE query to remove the chapter
-	_, err := m.Db.Exec("DELETE FROM chapter WHERE manga_id = ? AND chapter_id = ?", mangaID, chapterID)
+	_, err := m.Db.Exec("DELETE FROM chapter WHERE manga_id = ? AND id = ?", mangaID, chapterID)
 	if err != nil {
 		log.Println("Error deleting chapter:", err)
 		return false

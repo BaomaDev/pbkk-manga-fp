@@ -8,31 +8,30 @@ const ManageChapter = () => {
         title: "",
         pdfFile: null,
     });
-
     const [chapters, setChapters] = useState([]); // To store fetched chapters
     const [deleteMangaId, setDeleteMangaId] = useState(""); // Manga ID for deletion
     const [deleteChapterNo, setDeleteChapterNo] = useState(""); // Chapter number for deletion
 
-    // Function to fetch chapters by manga ID
+    // Fetch chapters by manga ID
     const fetchChapters = async (mangaId) => {
         try {
             const response = await ChapterService.getByMangaId(mangaId);
-            setChapters(response.data || []); // Fallback to an empty array if data is null
+            console.log("API Response for chapters:", response.data); // Debugging log
+            setChapters(response.data || []); // Fallback to an empty array if the response is null
         } catch (error) {
             console.error("Error fetching chapters:", error);
-            setChapters([]); // Reset to an empty array on error
         }
     };
 
     useEffect(() => {
         if (formData.mangaId) {
-            fetchChapters(formData.mangaId); // Fetch chapters on mangaId change
+            fetchChapters(formData.mangaId); // Fetch chapters whenever mangaId changes
         }
     }, [formData.mangaId]);
 
     useEffect(() => {
         if (deleteMangaId) {
-            fetchChapters(deleteMangaId); // Fetch chapters on deleteMangaId change
+            fetchChapters(deleteMangaId); // Fetch chapters whenever deleteMangaId changes
         }
     }, [deleteMangaId]);
 
@@ -66,12 +65,18 @@ const ManageChapter = () => {
 
     const handleDeleteChapter = async () => {
         if (window.confirm("Are you sure you want to delete this chapter?")) {
+            if (!deleteMangaId || !deleteChapterNo) {
+                alert("Manga ID and Chapter Number are required to delete a chapter.");
+                return;
+            }
+
             try {
+                console.log("Deleting chapter with Manga ID:", deleteMangaId, "Chapter No:", deleteChapterNo); // Debugging log
                 await ChapterService.delete(deleteMangaId, deleteChapterNo);
                 alert("Chapter deleted successfully!");
-                fetchChapters(deleteMangaId); // Fetch updated chapters list after deletion
-                setDeleteMangaId(""); // Reset delete manga ID
-                setDeleteChapterNo(""); // Reset delete chapter number
+                fetchChapters(deleteMangaId); // Refresh chapters after deletion
+                setDeleteMangaId("");
+                setDeleteChapterNo("");
             } catch (error) {
                 console.error("Error deleting chapter:", error);
                 alert("Failed to delete chapter. Please try again.");
@@ -165,8 +170,11 @@ const ManageChapter = () => {
                     >
                         <option value="">Select a chapter</option>
                         {chapters.map((chapter) => (
-                            <option key={chapter.chapterNo} value={chapter.chapterNo}>
-                                Chapter {chapter.chapterNo}: {chapter.title}
+                            <option
+                                key={chapter.id} // Ensure this is unique
+                                value={chapter.id} // Use chapterNo as the value
+                            >
+                                {chapter.chapter_no} - {chapter.title}
                             </option>
                         ))}
                     </select>

@@ -16,6 +16,6 @@ type PostChapter struct {
 }
 
 type ChapterUri struct {
-    MangaID   uint `uri:"manga_id" binding:"required"`
-    ChapterID uint `uri:"chapter_id" binding:"required"`
+	MangaID   uint `uri:"manga_id" binding:"required"`
+	ChapterID uint `uri:"id" binding:"required"`
 }
