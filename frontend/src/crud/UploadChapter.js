@@ -126,6 +126,7 @@ const ManageChapter = () => {
             setChapters(response.data); // Set the chapters state
         } catch (error) {
             console.error("Error fetching chapters:", error);
+            setChapters([]);
         }
     };
 
@@ -134,6 +135,12 @@ const ManageChapter = () => {
             fetchChapters(formData.mangaId); // Fetch chapters on mangaId change
         }
     }, [formData.mangaId]);
+
+    useEffect(() => {
+        if (deleteMangaId) {
+            fetchChapters(deleteMangaId); // Fetch chapters on deleteMangaId change
+        }
+    }, [deleteMangaId]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -255,14 +262,20 @@ const ManageChapter = () => {
                 </div>
                 <div className="mb-4">
                     <label className="block text-gray-700 font-bold mb-1">Chapter Number</label>
-                    <input
-                        type="number"
+                    <select
                         name="deleteChapterNo"
                         value={deleteChapterNo}
                         onChange={(e) => setDeleteChapterNo(e.target.value)}
                         className="w-full border-gray-300 rounded-md p-2"
                         required
-                    />
+                    >
+                        <option value="">Select a chapter</option>
+                        {chapters.map((chapter) => (
+                            <option key={chapter.chapterNo} value={chapter.chapterNo}>
+                                Chapter {chapter.chapterNo}: {chapter.title}
+                            </option>
+                        ))}
+                    </select>
                 </div>
                 <button
                     onClick={handleDeleteChapter}
@@ -270,27 +283,6 @@ const ManageChapter = () => {
                 >
                     Delete Chapter
                 </button>
-            </div>
-
-            {/* Display Chapters Section */}
-            <div className="mt-6">
-                <h3 className="text-xl font-bold text-gray-800 mb-4">Chapters</h3>
-                <table className="min-w-full bg-white shadow-md rounded-md overflow-hidden">
-                    <thead>
-                        <tr>
-                            <th className="px-4 py-2 text-left">Chapter No</th>
-                            <th className="px-4 py-2 text-left">Title</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {chapters.map((chapter) => (
-                            <tr key={chapter.chapterNo}>
-                                <td className="px-4 py-2">{chapter.chapterNo}</td>
-                                <td className="px-4 py-2">{chapter.title}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
             </div>
         </div>
     );

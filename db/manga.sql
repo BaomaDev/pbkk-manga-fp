@@ -2,6 +2,7 @@
 USE mangastore;
 
 DROP TABLE IF EXISTS manga;
+DROP TABLE IF EXISTS chapter;
 
 CREATE TABLE manga (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
